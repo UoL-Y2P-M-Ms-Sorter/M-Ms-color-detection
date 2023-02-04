@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8b5d823b-1ad0-4666-947f-a75fdd655f64" name="Changes" comment="init">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="8b5d823b-1ad0-4666-947f-a75fdd655f64" name="Changes" comment="fix bugs in train.py&#10;create split.py">
       <change beforePath="$PROJECT_DIR$/split.py" beforeDir="false" afterPath="$PROJECT_DIR$/split.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
     </list>
@@ -90,7 +89,7 @@
       <updated>1675526916879</updated>
       <workItem from="1675526918446" duration="249000" />
       <workItem from="1675527185647" duration="1115000" />
-      <workItem from="1675528305267" duration="4745000" />
+      <workItem from="1675528305267" duration="6001000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1675527406085</created>
@@ -113,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675528384624</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix bugs in train.py&#10;create split.py">
+      <created>1675551300654</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1675551300654</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,9 +150,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
-    <option name="LAST_COMMIT_MESSAGE" value="init" />
+    <MESSAGE value="fix bugs in train.py&#10;create split.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bugs in train.py&#10;create split.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/M_Ms_color_detection_$train.coverage" NAME="train Coverage Results" MODIFIED="1675551931353" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/M_Ms_color_detection_$main.coverage" NAME="main Coverage Results" MODIFIED="1675550099102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/M_Ms_color_detection_$split.coverage" NAME="split Coverage Results" MODIFIED="1675551245538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
