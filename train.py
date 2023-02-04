@@ -26,7 +26,7 @@ def main():
                                                num_workers=8)
 
     val_dataset = datasets.ImageFolder("data/val", transform=data_transform["val"])
-    val_loader = torch.utils.data.Dataloader(dataset=val_dataset, batch_size=batch_size, shuffle=True,
+    val_loader = torch.utils.data.DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle=True,
                                              num_workers=8)
 
     net = resnet18(6, True)
@@ -34,19 +34,19 @@ def main():
     loss_function = nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=0.0001)
 
-    epochs = 20
+    epochs = 5
 
     best_acc = 0.0
     for epoch in range(epochs):
         net.train()
         running_loss = 0.0
-        with tqdm(len(train_loader)) as pbar:
+        with tqdm(total=len(train_loader)) as pbar:
             for images, labels in train_loader:
                 output = net(images.to(device))
                 loss = loss_function(output, labels.to(device))
 
                 optimizer.zero_grad()
-                loss.backword()
+                loss.backward()
                 optimizer.step()
 
                 running_loss += loss.item()
@@ -56,7 +56,7 @@ def main():
         running_acc = 0.0
 
         with torch.no_grad():
-            with tqdm(len(val_loader)) as pbar:
+            with tqdm(total=len(val_loader)) as pbar:
                 for images, labels in val_loader:
                     output = net(images.to(device))
                     predict = torch.max(output, dim=1)[1]
@@ -70,10 +70,10 @@ def main():
         print('[Epoch %d] train_loss: %.3f val_acc: %.3f' %
               (epoch + 1, train_loss, val_acc))
 
-        if val_acc < best_acc:
+        if val_acc > best_acc:
             best_acc = val_acc
 
-            torch.save(net.state_dict(), '/weight/mms.pth')
+            torch.save(net.state_dict(), "weight/mms.pth")
 
 
 if __name__ == '__main__':
