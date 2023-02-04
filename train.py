@@ -1,4 +1,3 @@
-import os
 from torchvision import transforms, datasets
 import torch
 import torch.nn as nn
@@ -26,11 +25,9 @@ def main():
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True,
                                                num_workers=8)
 
-
     val_dataset = datasets.ImageFolder("data/val", transform=data_transform["val"])
     val_loader = torch.utils.data.Dataloader(dataset=val_dataset, batch_size=batch_size, shuffle=True,
                                              num_workers=8)
-
 
     net = resnet18(6, True)
     net.to(device)
@@ -45,7 +42,6 @@ def main():
         running_loss = 0.0
         with tqdm(len(train_loader)) as pbar:
             for images, labels in train_loader:
-
                 output = net(images.to(device))
                 loss = loss_function(output, labels.to(device))
 
@@ -62,7 +58,6 @@ def main():
         with torch.no_grad():
             with tqdm(len(val_loader)) as pbar:
                 for images, labels in val_loader:
-
                     output = net(images.to(device))
                     predict = torch.max(output, dim=1)[1]
 
@@ -73,7 +68,7 @@ def main():
         train_loss = running_loss / len(train_dataset)
         val_acc = running_acc / len(val_dataset)
         print('[Epoch %d] train_loss: %.3f val_acc: %.3f' %
-              (epoch +1, train_loss, val_acc))
+              (epoch + 1, train_loss, val_acc))
 
         if val_acc < best_acc:
             best_acc = val_acc
