@@ -1,4 +1,5 @@
 from torchvision import transforms, datasets
+import json
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -24,6 +25,13 @@ def main():
     train_dataset = datasets.ImageFolder("data/train", transform=data_transform["train"])
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True,
                                                num_workers=8)
+
+    color_list = train_dataset.class_to_idx
+    color_dict = dict((val, key) for key, val in color_list.items())
+    json_str = json.dumps(color_dict, indent=4)
+    with open('class_indices.json', 'w') as json_file:
+        json_file.write(json_str)
+
 
     val_dataset = datasets.ImageFolder("data/val", transform=data_transform["val"])
     val_loader = torch.utils.data.DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle=True,
