@@ -42,7 +42,7 @@ def main():
     loss_function = nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=0.0001)
 
-    epochs = 5
+    epochs = 20
 
     best_acc = 0.0
     for epoch in range(epochs):
