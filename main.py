@@ -8,6 +8,7 @@ import json
 import time
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print("{} is in use".format(device))
 
 data_transform = transforms.Compose(
         [transforms.Resize([256, 256]),
@@ -43,24 +44,23 @@ while(1):
 
 
     ret, frame = cap.read(0)
+    cv2.imshow("capture", frame)
     frame_PIL = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
     image = torch.unsqueeze(data_transform(frame_PIL), dim=0)
 
     with torch.no_grad():
-        output = torch.squeeze(net(image.to(device)))
+        output = torch.squeeze(net(image.to(device))).cpu()
         predict = torch.argmax(output).numpy()
 
-
+    '''
     print(class_indict[str(predict)])
-
-
-    cv2.imshow("capture", frame)
+    '''
 
     if(cv2.waitKey(1) & 0xFF == ord('q')):
         break
 
     counter += 1
     if (time.time() - start_time) > x:
-        '''print("FPS: ", counter / (time.time() - start_time))'''
+        print("FPS: ", counter / (time.time() - start_time))
         counter = 0
         start_time = time.time()
