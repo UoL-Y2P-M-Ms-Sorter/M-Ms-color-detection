@@ -11,6 +11,8 @@ audios_to_process = Queue()
 
 state = 0.5
 
+mic = sr.Microphone.list_microphone_names().index("UC60 Audio")
+
 
 def callback(recognizer, audio_data):
     if audio_data:
@@ -19,7 +21,7 @@ def callback(recognizer, audio_data):
 
 def listen():
     global state
-    source = sr.Microphone()
+    source = sr.Microphone(device_index=mic)
     stop = listen_recognizer.listen_in_background(source, callback, 3)
     return stop
 
