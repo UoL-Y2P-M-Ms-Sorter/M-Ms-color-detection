@@ -49,15 +49,17 @@ while(1):
         output = torch.squeeze(net(image.to(device))).cpu()
         predict = torch.argmax(output).numpy()
 
-    '''
+
     print(class_indict[str(predict)])
-    '''
+
 
     if(cv2.waitKey(1) & 0xFF == ord('q')):
         break
 
     counter += 1
     if (time.time() - start_time) > x:
+        '''
         print("FPS: ", counter / (time.time() - start_time))
+        '''
         counter = 0
         start_time = time.time()
