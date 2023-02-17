@@ -25,9 +25,6 @@ for i in range(0, len(port_list)):
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
-print(cap.get(3))
-print(cap.get(4))
-print(cap.get(5))
 
 with open('./class_indices.json', "r") as f:
     class_indict = json.load(f)
@@ -43,7 +40,7 @@ counter = 0
 while(1):
 
 
-    ret, frame = cap.read(0)
+    ret, frame = cap.read()
     cv2.imshow("capture", frame)
     frame_PIL = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
     image = torch.unsqueeze(data_transform(frame_PIL), dim=0)
