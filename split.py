@@ -19,6 +19,7 @@ def main():
             if image in val_images:
                 copy(os.path.join(color_path, image),
                      os.path.join('data/val', color, image))
+                os.remove(os.path.join(color_path, image))
 
 
 if __name__ == '__main__':
