@@ -6,6 +6,7 @@ import torch.optim as optim
 from model import resnet18
 from tqdm import tqdm
 
+
 def main():
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print("{} is in use".format(device))
@@ -25,13 +26,6 @@ def main():
     train_dataset = datasets.ImageFolder("data/train", transform=data_transform["train"])
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True,
                                                num_workers=8)
-
-    color_list = train_dataset.class_to_idx
-    color_dict = dict((val, key) for key, val in color_list.items())
-    json_str = json.dumps(color_dict, indent=4)
-    with open('class_indices.json', 'w') as json_file:
-        json_file.write(json_str)
-
 
     val_dataset = datasets.ImageFolder("data/val", transform=data_transform["val"])
     val_loader = torch.utils.data.DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle=True,
