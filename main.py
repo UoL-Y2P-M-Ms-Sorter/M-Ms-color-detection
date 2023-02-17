@@ -6,6 +6,7 @@ from torchvision import transforms
 from model import resnet18
 import json
 import time
+from com import send
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("{} is in use".format(device))
@@ -16,11 +17,13 @@ data_transform = transforms.Compose(
      transforms.ToTensor(),
      transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
 
+device_exist = 0
 port_list = list(serial.tools.list_ports.comports())
 port_name = "STM32"
 for i in range(0, len(port_list)):
     if port_name in port_list[i].description:
         serial = serial.Serial(port_list[i].device, 9600, write_timeout=2)
+        device_exist = 1
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -48,6 +51,8 @@ while 1:
         output = torch.squeeze(net(image.to(device))).cpu()
         predict = torch.argmax(output).numpy()
 
+    if device_exist:
+        send(serial, 1, predict)
     print(class_indict[str(predict)])
 
     if (cv2.waitKey(1) & 0xFF == ord('q')):
@@ -60,3 +65,5 @@ while 1:
         '''
         counter = 0
         start_time = time.time()
+
+serial.close()
