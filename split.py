@@ -5,7 +5,7 @@ from shutil import copy
 def main():
     random.seed(0)
 
-    split_rate = 0.3
+    split_rate = 0.1
 
     color_class = [color for color in os.listdir("data/train")]
     if '.DS_Store' in color_class:
