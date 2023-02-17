@@ -14,4 +14,3 @@ def send(port, mode, color):
     data.append(66)
 
     port.write(bytes(data))
-

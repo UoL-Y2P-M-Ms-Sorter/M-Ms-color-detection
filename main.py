@@ -11,10 +11,10 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("{} is in use".format(device))
 
 data_transform = transforms.Compose(
-        [transforms.Resize([256, 256]),
-         transforms.CenterCrop(224),
-         transforms.ToTensor(),
-         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
+    [transforms.Resize([256, 256]),
+     transforms.CenterCrop(224),
+     transforms.ToTensor(),
+     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
 
 port_list = list(serial.tools.list_ports.comports())
 port_name = "STM32"
@@ -34,11 +34,10 @@ net.load_state_dict(torch.load("weight/mms.pth", map_location=device))
 net.eval()
 
 start_time = time.time()
-x = 1 # displays the frame rate every 1 second
+x = 1  # displays the frame rate every 1 second
 counter = 0
 
-while(1):
-
+while 1:
 
     ret, frame = cap.read()
     cv2.imshow("capture", frame)
@@ -49,11 +48,9 @@ while(1):
         output = torch.squeeze(net(image.to(device))).cpu()
         predict = torch.argmax(output).numpy()
 
-
     print(class_indict[str(predict)])
 
-
-    if(cv2.waitKey(1) & 0xFF == ord('q')):
+    if (cv2.waitKey(1) & 0xFF == ord('q')):
         break
 
     counter += 1
