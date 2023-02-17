@@ -20,7 +20,7 @@ port_list = list(serial.tools.list_ports.comports())
 port_name = "STM32"
 for i in range(0, len(port_list)):
     if port_name in port_list[i].description:
-        serial = serial.Serial(port_list[i].device, 115200, timeout=2)
+        serial = serial.Serial(port_list[i].device, 9600, write_timeout=2)
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)

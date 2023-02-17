@@ -31,12 +31,12 @@ def main():
     val_loader = torch.utils.data.DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle=True,
                                              num_workers=8)
 
-    net = resnet18(6, True)
+    net = resnet18(7, True)
     net.to(device)
     loss_function = nn.CrossEntropyLoss()
     optimizer = optim.Adam(net.parameters(), lr=0.0001)
 
-    epochs = 20
+    epochs = 50
 
     best_acc = 0.0
     for epoch in range(epochs):
