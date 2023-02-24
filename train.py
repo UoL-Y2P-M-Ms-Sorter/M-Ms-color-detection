@@ -5,6 +5,8 @@ import torch.nn as nn
 import torch.optim as optim
 from model import resnet18
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def main():
@@ -40,6 +42,8 @@ def main():
     epochs = 50
 
     best_acc = 0.0
+    train_loss = []
+    val_acc = []
     for epoch in range(epochs):
         net.train()
         running_loss = 0.0
@@ -68,15 +72,32 @@ def main():
 
                     pbar.update(1)
 
-        train_loss = running_loss / len(train_dataset)
-        val_acc = running_acc / len(val_dataset)
+        train_loss.append(running_loss / len(train_dataset))
+        val_acc.append(running_acc / len(val_dataset))
         print('[Epoch %d] train_loss: %.3f val_acc: %.3f' %
-              (epoch + 1, train_loss, val_acc))
+              (epoch + 1, train_loss[-1], val_acc[-1]))
 
         if val_acc > best_acc:
             best_acc = val_acc
 
-            torch.save(net.state_dict(), "weight/mms.pth")
+            torch.save(net.state_dict(), "weight/mmst.pth")
+
+    x = np.arange(0, epochs)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    loss = ax.plot(x, train_loss, '-', label='train_loss')
+    ax2 = ax.twinx()
+    acc = ax2.plot(x, val_acc, '-', label='val_acc')
+    lns = loss + acc
+    labs = [l.get_label() for l in lns]
+    ax.legend(lns, labs, loc=0)
+    ax.grid()
+    ax.set_xlabel("Epochs")
+    ax.set_ylabel("Loss")
+    ax2.set_ylabel("Accuracy")
+    plt.title("train_loss & val_acc per epoch")
+    plt.savefig('loss_acc.pdf')
+    plt.show()
 
 
 if __name__ == '__main__':
