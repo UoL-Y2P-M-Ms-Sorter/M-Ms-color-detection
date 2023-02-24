@@ -23,13 +23,13 @@ for i in range(0, len(port_list)):
         device_exist = 1
 
 mode = 2
-color = 6
+color = 0
 
-img_index = [0, 0, 0, 0, 0, 0, 0]
+img_index = [200, 200, 200, 200, 200, 200, 200]
 
 while(1):
     if device_exist :
-        send(serial, mode, color)
+        send(serial, 0, 0)
 
     ret, frame = cap.read()
     cv2.imshow("capture", frame)

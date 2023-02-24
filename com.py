@@ -13,4 +13,8 @@ def send(port, mode, color):
 
     data.append(66)
 
-    port.write(bytes(data))
+    try:
+        port.write(bytes(data))
+        return 1
+    except Exception:
+        return 0

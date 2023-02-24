@@ -8,12 +8,14 @@ import time
 from com import send
 from pynput import keyboard
 from pynput.keyboard import Key, Controller
+import json
 
 keyboard0 = Controller()
 
 isEnd = False
 
-
+with open('./class_indices.json', "r") as f:
+    class_indict = json.load(f)
 def keyboard_on_release(key):
     global isEnd
     if key == keyboard.Key.esc:
@@ -34,14 +36,7 @@ net = resnet18(num_classes=7).to(device)
 net.load_state_dict(torch.load("weight/mms.pth", map_location=device))
 net.eval()
 
-
 device_exist = 0
-port_list = list(serial.tools.list_ports.comports())
-port_name = "STM32"
-for i in range(0, len(port_list)):
-    if port_name in port_list[i].description:
-        serial = serial.Serial(port_list[i].device)
-        device_exist = 1
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -64,9 +59,19 @@ while 1:
     counter = 0
 
     while 1:
+        if device_exist == 0:
+            import serial.tools.list_ports
+            port_list = list(serial.tools.list_ports.comports())
+            port_name = "STM32"
+            for i in range(0, len(port_list)):
+                if port_name in port_list[i].description:
+                    try:
+                        serial = serial.Serial(port_list[i].device, write_timeout=1)
+                        device_exist = 1
+                    except Exception:
+                        pass
 
         ret, frame = cap.read()
-        '''cv2.imshow("capture", frame)'''
         frame_PIL = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         image = torch.unsqueeze(data_transform(frame_PIL), dim=0)
 
@@ -74,21 +79,17 @@ while 1:
             output = torch.squeeze(net(image.to(device))).cpu()
             predict = torch.argmax(output).numpy()
 
-        if device_exist:
-            send(serial, 0, predict)
-
-        '''print(class_indict[str(predict)])'''
+            device_exist = send(serial, 0, predict)
 
         counter += 1
         if (time.time() - start_time) >= x:
-
-            print("FPS: %.3f" % (counter / (time.time() - start_time)))
-
+            print(device_exist)
+            '''print("FPS: %.3f" % (counter / (time.time() - start_time)))'''
+            print(class_indict[str(predict)])
             counter = 0
             start_time = time.time()
 
-        if device_exist:
-            send(serial, 1, predict)
-
         if isEnd:
+            if device_exist:
+                send(serial, 1, predict)
             break
