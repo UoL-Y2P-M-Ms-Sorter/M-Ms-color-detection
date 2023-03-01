@@ -9,6 +9,25 @@ from com import send
 from pynput import keyboard
 from pynput.keyboard import Key, Controller
 import json
+import threading
+
+cap = cv2.VideoCapture(0)
+cap.set(3, 640)
+cap.set(4, 480)
+
+global frame
+def cap0():
+    while (1):
+        global frame
+        _, frame = cap.read()
+        cv2.imshow("capture", frame)
+
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord('q'):
+            break
+
+capture = threading.Thread(target=cap0)
 
 keyboard0 = Controller()
 
@@ -26,7 +45,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("{} is in use".format(device))
 
 data_transform = transforms.Compose(
-    [transforms.CenterCrop([256, 256]),
+    [transforms.CenterCrop([200, 200]),
      transforms.Resize(224),
      transforms.ToTensor(),
      transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
@@ -38,9 +57,8 @@ net.eval()
 
 device_exist = 0
 
-cap = cv2.VideoCapture(0)
-cap.set(3, 640)
-cap.set(4, 480)
+
+capture.start()
 
 stopper = keyboard.Listener(on_release=keyboard_on_release)
 while 1:
@@ -62,7 +80,7 @@ while 1:
         if device_exist == 0:
             import serial.tools.list_ports
             port_list = list(serial.tools.list_ports.comports())
-            port_name = "STM32"
+            port_name = "COM5"
             for i in range(0, len(port_list)):
                 if port_name in port_list[i].description:
                     try:
@@ -71,7 +89,6 @@ while 1:
                     except Exception:
                         pass
 
-        ret, frame = cap.read()
         frame_PIL = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         image = torch.unsqueeze(data_transform(frame_PIL), dim=0)
 
@@ -84,8 +101,9 @@ while 1:
         counter += 1
         if (time.time() - start_time) >= x:
             print(device_exist)
-            '''print("FPS: %.3f" % (counter / (time.time() - start_time)))'''
+            print("FPS: %.3f" % (counter / (time.time() - start_time)))
             print(class_indict[str(predict)])
+            print()
             counter = 0
             start_time = time.time()
 
