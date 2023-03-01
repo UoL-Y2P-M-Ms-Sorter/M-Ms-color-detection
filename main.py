@@ -16,8 +16,10 @@ cap.set(3, 640)
 cap.set(4, 480)
 
 global frame
+
+
 def cap0():
-    while (1):
+    while 1:
         global frame
         _, frame = cap.read()
         cv2.imshow("capture", frame)
@@ -27,6 +29,7 @@ def cap0():
         if key == ord('q'):
             break
 
+
 capture = threading.Thread(target=cap0)
 
 keyboard0 = Controller()
@@ -35,11 +38,14 @@ isEnd = False
 
 with open('./class_indices.json', "r") as f:
     class_indict = json.load(f)
+
+
 def keyboard_on_release(key):
     global isEnd
     if key == keyboard.Key.esc:
         isEnd = True
         return False
+
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("{} is in use".format(device))
@@ -50,13 +56,11 @@ data_transform = transforms.Compose(
      transforms.ToTensor(),
      transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
 
-
 net = resnet18(num_classes=7).to(device)
 net.load_state_dict(torch.load("weight/mms.pth", map_location=device))
 net.eval()
 
 device_exist = 0
-
 
 capture.start()
 
@@ -71,7 +75,6 @@ while 1:
     stopper.start()
     isEnd = False
 
-
     start_time = time.time()
     x = 1  # displays the frame rate every 1 second
     counter = 0
@@ -79,6 +82,7 @@ while 1:
     while 1:
         if device_exist == 0:
             import serial.tools.list_ports
+
             port_list = list(serial.tools.list_ports.comports())
             port_name = "COM5"
             for i in range(0, len(port_list)):
