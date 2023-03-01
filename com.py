@@ -1,5 +1,6 @@
 import serial
 
+
 def send(port, mode, color):
     data = bytearray()
 

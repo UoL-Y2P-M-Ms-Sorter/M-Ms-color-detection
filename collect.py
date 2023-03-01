@@ -1,9 +1,10 @@
-import serial.tools.list_ports
-import cv2
-from com import send
-import time
-import os
 import json
+import os
+
+import cv2
+import serial.tools.list_ports
+
+from com import send
 
 with open('./class_indices.json', "r") as f:
     class_indict = json.load(f)
@@ -28,6 +29,7 @@ color = 0
 img_index = [200, 200, 200, 200, 200, 200, 200]
 
 while 1:
+
     if device_exist:
         send(serial, 0, 0)
 

@@ -1,14 +1,14 @@
-import torch
-from sklearn.metrics import accuracy_score
-from torchvision import transforms, datasets
-from sklearn.metrics import confusion_matrix, classification_report
-import seaborn as sns, pandas as pd
-import matplotlib.pyplot as plt
-from model import resnet18
 import json
 
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import torch
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix, classification_report
+from torchvision import transforms, datasets
 
-
+from model import resnet18
 
 if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -31,10 +31,9 @@ if __name__ == '__main__':
                                          transforms.Resize(224),
                                          transforms.ToTensor(),
                                          transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
-    val_dataset = datasets.ImageFolder("data/val", transform=data_transform)  # 测试集数据
+    val_dataset = datasets.ImageFolder("data/val", transform=data_transform)
     val_loader = torch.utils.data.DataLoader(dataset=val_dataset, batch_size=BATCH_SIZE, shuffle=False,
-                                                 num_workers=8)  # 加载数据
-
+                                             num_workers=8)
 
     classes = list(class_indict.values())
 
@@ -55,13 +54,11 @@ if __name__ == '__main__':
     for i in range(7):
         print(f"Accuracy of {classes[i]:5s}: {100 * class_correct[i] / class_total[i]:2.0f}%")
 
-
     ac = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
     cr = classification_report(y_test, y_pred, target_names=classes)
     print("Accuracy is :", ac)
     print(cr)
-
 
     labels = pd.DataFrame(cm).applymap(lambda v: f"{v}" if v != 0 else f"")
     plt.figure()

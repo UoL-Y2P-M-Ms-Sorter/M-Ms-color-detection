@@ -1,6 +1,0 @@
-pyserial~=3.5
-opencv-python~=4.7.0.68
-torch~=1.13.1
-Pillow~=9.4.0
-torchvision~=0.14.1
-tqdm~=4.64.1

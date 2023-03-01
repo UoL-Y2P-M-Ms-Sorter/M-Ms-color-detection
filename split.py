@@ -2,6 +2,7 @@ import random
 import os
 from shutil import copy
 
+
 def main():
     random.seed(0)
 
@@ -14,7 +15,7 @@ def main():
         color_path = os.path.join('data/train', color)
         images = os.listdir(color_path)
 
-        val_images = random.sample(images, int(len(images)*split_rate))
+        val_images = random.sample(images, int(len(images) * split_rate))
         for index, image in enumerate(images):
             if image in val_images:
                 copy(os.path.join(color_path, image),

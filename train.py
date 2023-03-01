@@ -1,5 +1,4 @@
 from torchvision import transforms, datasets
-import json
 import torch
 import torch.nn as nn
 import torch.optim as optim

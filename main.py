@@ -22,7 +22,7 @@ def cap0():
     while 1:
         global frame
         _, frame = cap.read()
-        cv2.imshow("capture", frame)
+        '''cv2.imshow("capture", frame)'''
 
         key = cv2.waitKey(1) & 0xFF
 
@@ -31,6 +31,7 @@ def cap0():
 
 
 capture = threading.Thread(target=cap0)
+capture.daemon = 1
 
 keyboard0 = Controller()
 
